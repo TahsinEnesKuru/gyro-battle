@@ -29,8 +29,8 @@ io.on('connection', (socket) => {
         let p = gameState.players[socket.id];
         if (p) {
             // Gyro hassasiyeti (0.003 - 0.005 arası idealdir)
-            p.x = Math.max(0, Math.min(1, p.x + (data.gamma || 0) * 0.004));
-            p.y = Math.max(0, Math.min(1, p.y + (data.beta || 0) * 0.004));
+            p.x = Math.max(0, Math.min(1, p.x + (data.gamma || 0) * 0.001));
+            p.y = Math.max(0, Math.min(1, p.y + (data.beta || 0) * 0.001));
             checkCollisions(socket.id);
         }
     });
