@@ -19,13 +19,26 @@ function syncPlayers(serverPlayers) {
     for (let id in serverPlayers) {
         if (!players[id]) {
             let isMe = (id === socket.id);
-            let img1 = isMe ? blueSprites[0] : redSprites[0];
-            let img2 = isMe ? blueSprites[1] : redSprites[1];
+            // Senin Player.js constructor'ın: (x, y, image1, image2) bekliyor
+            let img1 = isMe ? blueSprites[0] : redSprites[1]; // blue1.png
+            let img2 = isMe ? blueSprites[1] : redSprites[1]; // blue2.png
+            
+            // DİKKAT: Eğer rakipse kırmızı resimleri gönder
+            if (!isMe) {
+                img1 = redSprites[0];
+                img2 = redSprites[1];
+            }
+
             players[id] = new Player(serverPlayers[id].x, serverPlayers[id].y, img1, img2);
         }
+        // Verileri güncelle
         players[id].update(serverPlayers[id]);
     }
-    for (let id in players) if (!serverPlayers[id]) delete players[id];
+    
+    // Çıkan oyuncuları temizle
+    for (let id in players) {
+        if (!serverPlayers[id]) delete players[id];
+    }
 }
 
 function draw() {
@@ -40,6 +53,8 @@ function draw() {
 
     // Giriş Verisi Gönder
     socket.emit('gyroData', { beta: rotationX, gamma: rotationY });
+
+    if (socket) console.log("Bağlı oyuncu sayısı:", Object.keys(players).length);    
 }
 
 function drawAsset(item, col, isWeapon) {
