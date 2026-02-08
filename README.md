@@ -10,6 +10,9 @@ weapons and health items, and fight other connected players in real
 time.
 
 ------------------------------------------------------------------------
+# 🎮 Play here
+[https://gyro-battle.onrender.com](https://gyro-battle.onrender.com)
+------------------------------------------------------------------------
 
 ## ✨ Features
 
