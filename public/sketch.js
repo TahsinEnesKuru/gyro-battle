@@ -1,9 +1,12 @@
 let socket, players = {}, items = {};
 let blueSprites = [], redSprites = [];
+let weaponSprite;
 
 function preload() {
     blueSprites = [loadImage('assets/blue1.png'), loadImage('assets/blue2.png')];
     redSprites = [loadImage('assets/red1.png'), loadImage('assets/red2.png')];
+    weaponSprite = loadImage('assets/weapon.png');
+
 }
 
 function setup() {
@@ -42,7 +45,7 @@ function syncPlayers(serverPlayers) {
 }
 
 function draw() {
-    background(20);
+    background(200);
     
     // Itemları Çiz
     if (items.weapon?.active) drawAsset(items.weapon, 'gold', true);
@@ -76,6 +79,7 @@ class Player {
         this.randomOffset = random(1000);
         this.health = 100;
         this.hasWeapon = false;
+        this.weaponAngle = 0;
     }
 
     update(data) {
@@ -95,14 +99,18 @@ class Player {
         imageMode(CENTER);
         let frameIdx = ceil((frameCount + this.randomOffset) * 0.1);
         let img = frameIdx % 2 ? this.image2 : this.image1;
-        image(img, 0, 0, width * 0.08, width * 0.08);
+        image(img, 0, 0, width * 0.16, width * 0.16);
+        rotate(-this.angle);
+        
 
-        if (this.hasWeapon) { 
-            noFill(); stroke('gold'); strokeWeight(3); 
-            ellipse(0, 0, width * 0.1); 
+        if (1 || this.hasWeapon) { 
+            rotate(this.weaponAngle);
+            image(weaponSprite, 0, 0, width * 0.24, width * 0.24);
+            rotate(-this.weaponAngle);
+            this.weaponAngle += 0.02; // rotation speed
+
         }
         
-        rotate(-this.angle);
         // Health Bar
         fill(255, 0, 0); rect(-25, -50, 50, 6);
         fill(0, 255, 0); rect(-25, -50, map(this.health, 0, 100, 0, 50), 6);
