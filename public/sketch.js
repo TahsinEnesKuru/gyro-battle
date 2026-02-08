@@ -1,12 +1,13 @@
 let socket, players = {}, items = {};
 let blueSprites = [], redSprites = [];
 let weaponSprite;
+let heartSprite;
 
 function preload() {
     blueSprites = [loadImage('assets/blue1.png'), loadImage('assets/blue2.png')];
     redSprites = [loadImage('assets/red1.png'), loadImage('assets/red2.png')];
     weaponSprite = loadImage('assets/weapon.png');
-
+    heartSprite = loadImage('assets/heart.png');
 }
 
 function setup() {
@@ -48,8 +49,10 @@ function draw() {
     background(200);
     
     // Itemları Çiz
-    if (items.weapon?.active) drawAsset(items.weapon, 'gold', true);
-    if (items.life?.active) drawAsset(items.life, '#00ff00', false);
+    if (items.weapon?.active)
+        drawAsset(items.weapon, true);
+    if (items.life?.active) 
+        drawAsset(items.life, false);
 
     // Oyuncuları Çiz
     for (let id in players) players[id].show();
@@ -60,14 +63,15 @@ function draw() {
     if (socket) console.log("Bağlı oyuncu sayısı:", Object.keys(players).length);    
 }
 
-function drawAsset(item, col, isWeapon) {
+function drawAsset(item, isWeapon) {
     push();
-    fill(col);
-    noStroke();
     let x = item.x * width;
     let y = item.y * height;
-    if (isWeapon) triangle(x, y - 15, x - 15, y + 15, x + 15, y + 15);
-    else rect(x - 10, y - 10, 20, 20);
+    translate(x,y)
+    if (isWeapon)
+        image(weaponSprite,0,0,width*0.1,width*0.1)
+    else
+        image(heartSprite,0,0,width*0.1,width*0.11)
     pop();
 }
 
@@ -80,6 +84,7 @@ class Player {
         this.health = 100;
         this.hasWeapon = false;
         this.weaponAngle = 0;
+        this.hasHeart = false;
     }
 
     update(data) {
@@ -103,7 +108,7 @@ class Player {
         rotate(-this.angle);
         
 
-        if (1 || this.hasWeapon) { 
+        if (this.hasWeapon) { 
             rotate(this.weaponAngle);
             image(weaponSprite, 0, 0, width * 0.24, width * 0.24);
             rotate(-this.weaponAngle);
