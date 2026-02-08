@@ -1,13 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Gyro-Battle</title>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="p5.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>    
+    <script src="/socket.io/socket.io.js"></script>
+    <style> 
+        body { margin: 0; overflow: hidden; background: #000; touch-action: none; font-family: sans-serif; } 
+        #start-btn { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            padding: 20px 40px; font-size: 20px; z-index: 100; cursor: pointer;
+            background: #0096ff; color: white; border: none; border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button id="start-btn" onclick="startGyro()">OYUNA BAŞLA</button>
     <script src="sketch.js"></script>
-  </body>
+    <script src="Player.js"></script>
+    <script>
+        function startGyro() {
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission().then(res => {
+                    if (res == 'granted') document.getElementById('start-btn').style.display = 'none';
+                });
+            } else {
+                document.getElementById('start-btn').style.display = 'none';
+            }
+        }
+    </script>
+</body>
 </html>
