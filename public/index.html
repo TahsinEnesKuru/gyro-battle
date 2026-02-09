@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-    <button id="start-btn" onclick="startGyro()">OYUNA BAŞLA</button>
+    <button id="start-btn" onclick="startGyro()">Start Game</button>
 
     <script src="sketch.js"></script>
 
@@ -26,10 +26,10 @@
                 DeviceOrientationEvent.requestPermission().then(res => {
                     if (res == 'granted') {
                         document.getElementById('start-btn').style.display = 'none';
-                        // Bazı tarayıcılarda ses veya loop'u tetiklemek gerekebilir
+                        // Start the p5.js sketch
                         if (typeof loop === 'function') loop(); 
                     }
-                }).catch(err => console.error("Gyro izni alınamadı:", err));
+                }).catch(err => console.error("Gyro access denied:", err));
             } else {
                 document.getElementById('start-btn').style.display = 'none';
             }
